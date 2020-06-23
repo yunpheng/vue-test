@@ -1,4 +1,4 @@
-FROM node:10.16
+FROM node
 
 LABEL maintainer="yangfeng"
 
@@ -11,12 +11,16 @@ COPY ./ $APP_HOME
 RUN set -x && echo "\n======================\n" \
     && pwd && ls
 
-RUN set -x && npm  -g install nrm && \
+RUN set -x && npm -g install nrm && \
     nrm add taobao https://registry.npm.taobao.org && \
-    nrm use taobao && \
-    npm install pm2 -g
+    nrm use taobao
+
+# RUN npm install pm2 -g
 
 RUN set -x && npm install
+
+RUN set -x && echo "\n======================\n" && \
+    npm run build
 
 FROM nginx
 RUN mkdir /app
